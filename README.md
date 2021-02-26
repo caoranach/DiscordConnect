@@ -16,3 +16,5 @@ That's it!
 --------------------------------------------------
 
 Special thanks to Foundry-DiscordBridge by nearlyNonexistent, whose code helped me figure out a few things about how Foundry worked!
+
+Thanks also to Vaelos, who helped me submit it.
