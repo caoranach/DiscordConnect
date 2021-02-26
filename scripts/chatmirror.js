@@ -1,6 +1,14 @@
 console.log("Hello World! This code runs immediately when the file is loaded.");
 
 Hooks.on("init", function() {
+    game.settings.register('DiscordConnect', 'mainUserId', {
+        name: "Main GM ID",
+        hint: "If you plan on having two GMs in one session, fill this in with the main DM's ID to avoid duplicated messages. Just type 'dc getID' in chat to have your ID sent to your discord channel.",
+        scope: "world",
+        config: true,
+        default: "",
+        type: String
+    });
     game.settings.register('DiscordConnect', 'inviteURL', {
         name: "Game Invite URL",
         hint: "This should be the internet invite URL for your game session. Duh.",
@@ -28,8 +36,16 @@ Hooks.on('createChatMessage', (msg, options, userId) => {
 	if(!game.user.isGM){
 		return;
 	}
+	if(game.userId != game.settings.get("DiscordConnect", "mainUserId") && game.settings.get("DiscordConnect", "mainUserId") != ""){
+		return;
+	}
 	var constructedMessage = '';
 	var hookEmbed = [];
+	
+	if(msg.data.content == "dc getID"){
+		sendMessage(msg, "UserId: "+game.userId, hookEmbed);
+		return;
+	}
 	
 	if(msg.isRoll){
 		var title = '';
@@ -104,6 +120,29 @@ function sendMessage(message, msgText, hookEmbed) {
 		embeds: hookEmbed
 	}
 	request.send(JSON.stringify(params));
+}
+
+function createDialog(title, content){
+	let d = new Dialog({
+	title: title,
+	content: "<p>"+content+"</p>",
+	buttons: {
+	  one: {
+	   icon: '<i class="fas fa-check"></i>',
+	   label: "Option One",
+	   callback: () => console.log("Chose One")
+	  },
+	  two: {
+	   icon: '<i class="fas fa-times"></i>',
+	   label: "Option Two",
+	   callback: () => console.log("Chose Two")
+	  }
+	 },
+	 default: "two",
+	 render: html => console.log("Register interactivity in the rendered dialog"),
+	 close: html => console.log("This always is logged no matter which option is chosen")
+	});
+	d.render(true);
 }
 
 /**
