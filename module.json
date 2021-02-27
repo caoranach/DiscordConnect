@@ -10,6 +10,6 @@
 	"./scripts/chatmirror.js"
   ],
 "url": "https://github.com/caoranach/DiscordConnect/",
-"manifest": "https://raw.githubusercontent.com/caoranach/DiscordConnect/1.0.1/module.json",
+"manifest": "https://raw.githubusercontent.com/caoranach/DiscordConnect/main/module.json",
 "download": "https://github.com/caoranach/DiscordConnect/raw/main/DiscordConnect.zip"
 }
