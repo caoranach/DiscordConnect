@@ -7,7 +7,7 @@
   "minimumCoreVersion": "0.5.0",
   "compatibleCoreVersion": "0.7.9",
   "scripts": [
-	"scripts/chatmirror.js"
+	"./scripts/chatmirror.js"
   ],
 "url": "https://github.com/caoranach/DiscordConnect/",
 "manifest": "https://raw.githubusercontent.com/caoranach/DiscordConnect/1.0.1/module.json",
