@@ -11,12 +11,20 @@ That's it!
 If you have multiple GMs in your game, the module will have two copies of each message by default. You can fix this by picking a "main" GM and setting their userID in the settings. You can get a user's ID by simply typing 'dc getID' into Foundry chat once it's all set up, and it will put your ID in your discord channel.
 
 # Known Issues
+
 -Only partial support for midi-qol messages at the moment; more to come in the future!
--It's really bad with html content. Oops.
+
+-It's really bad with html content in general. Oops.
 
 
 # Future Plans
--I'd like it to work whether multiple GMs, one GM , or even no GM is present in a session. I hope to figure that out soon!
+
+I want it to work regardless of how many gm's there are, without needing users to select a "primary". 
+
+Hopefully total support for major other modules (like midi-qol!) won't be too huge. 
+
+Lets split messages into multiple channels! Wouldn't that be neat?
+
 --------------------------------------------------
 
 Special thanks to Foundry-DiscordBridge by nearlyNonexistent, whose code helped me figure out a few things about how Foundry worked!
