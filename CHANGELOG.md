@@ -1,3 +1,6 @@
+# 1.0.2
+Added a feature to allow users to block private messages/rolls from being copied to discord.
+
 # 1.0.1
 Added a feature to allow a "main GM" to be specified, as a simple way of preventing unwanted duplication of messages due to multiple GMs in a session.
 
