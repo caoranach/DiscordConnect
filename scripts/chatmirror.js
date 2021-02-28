@@ -1,5 +1,3 @@
-console.log("Hello World! This code runs immediately when the file is loaded.");
-
 Hooks.on("init", function() {
     game.settings.register('DiscordConnect', 'mainUserId', {
         name: "Main GM ID",
@@ -8,6 +6,14 @@ Hooks.on("init", function() {
         config: true,
         default: "",
         type: String
+    });
+	game.settings.register('DiscordConnect', 'ignoreWhispers', {
+        name: "Ignore Whispers & Private Rolls",
+        hint: "If this is on, then it will ignore whispers and private rolls. If this is off, it will send them to discord just like any other message.",
+        scope: "world",
+        config: true,
+        default: true,
+        type: Boolean
     });
     game.settings.register('DiscordConnect', 'inviteURL', {
         name: "Game Invite URL",
@@ -28,12 +34,10 @@ Hooks.on("init", function() {
 });
 
 Hooks.on("ready", function() {
-  console.log("This code runs once core initialization is ready and game data is available.");
 });
 
-
 Hooks.on('createChatMessage', (msg, options, userId) => {
-	if(!game.user.isGM){
+	if(!game.user.isGM || (game.settings.get("DiscordConnect", "ignoreWhispers") && msg.data.whisper.length > 0)){
 		return;
 	}
 	if(game.userId != game.settings.get("DiscordConnect", "mainUserId") && game.settings.get("DiscordConnect", "mainUserId") != ""){
