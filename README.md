@@ -23,8 +23,6 @@ I want it to work regardless of how many gm's there are, without needing users t
 
 Hopefully total support for major other modules (like midi-qol!) won't be too huge. 
 
-Lets split messages into multiple channels! Wouldn't that be neat?
-
 --------------------------------------------------
 
 Special thanks to Foundry-DiscordBridge by nearlyNonexistent, whose code helped me figure out a few things about how Foundry worked!

@@ -31,6 +31,14 @@ Hooks.on("init", function() {
         default: "http://",
         type: String
     });
+	game.settings.register('DiscordConnect', 'rollWebHookURL', {
+        name: "Roll Web Hook URL",
+        hint: "If you'd like to split messages between two channels, with rolls going to a separate channel, then put a second webhook URL here.",
+        scope: "world",
+        config: true,
+        default: "http://",
+        type: String
+    });
 });
 
 Hooks.on("ready", function() {
@@ -108,14 +116,24 @@ function sendMessage(message, msgText, hookEmbed) {
 	var actor = loadActorForChatMessage(message.data.speaker);
     let img = "";
     if (actor) {
-        img = generatePortraitImageElement(actor)
+        img = generatePortraitImageElement(actor);
     }
     else {
         img = message.user.avatar;
     }
-	
-    var request = new XMLHttpRequest();
-    request.open("POST", game.settings.get("DiscordConnect", "webHookURL"));
+	var hook = "";
+	if(message.isRoll && game.settings.get("DiscordConnect", "rollWebHookURL") != "http://"){
+		hook = game.settings.get("DiscordConnect", "rollWebHookURL");
+	}
+    else{
+		hook = game.settings.get("DiscordConnect", "webHookURL");
+	}
+	sendToWebhook(message, msgText, hookEmbed, hook, img);
+}
+
+function sendToWebhook(message, msgText, hookEmbed, hook, img){
+	var request = new XMLHttpRequest();
+    request.open("POST", hook);
 	request.setRequestHeader('Content-type', 'application/json');
 	var params = {
 		username: message.alias,
