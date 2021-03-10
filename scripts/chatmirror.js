@@ -108,7 +108,7 @@ function sendMessage(message, msgText, hookEmbed) {
 	var actor = loadActorForChatMessage(message.data.speaker);
     let img = "";
     if (actor) {
-        img = generatePortraitImageElement(actor)
+        img = generatePortraitImageElement(actor);
     }
     else {
         img = message.user.avatar;
