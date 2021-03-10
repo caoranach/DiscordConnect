@@ -23,6 +23,10 @@ I want it to work regardless of how many gm's there are, without needing users t
 
 Hopefully total support for major other modules (like midi-qol!) won't be too huge. 
 
+# Feedback
+
+If you have any questions, issues, or suggested features, feel free to dm me on discord (Caoranach#9357) or email me at caoranach.ar@gmail.com!
+
 --------------------------------------------------
 
 Special thanks to Foundry-DiscordBridge by nearlyNonexistent, whose code helped me figure out a few things about how Foundry worked!
