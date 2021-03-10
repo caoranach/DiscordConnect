@@ -25,18 +25,18 @@ Hooks.on("init", function() {
     });
 	game.settings.register('DiscordConnect', 'webHookURL', {
         name: "Web Hook URL",
-        hint: "This should be the Webhook's URL from the discord server you want to send messages to.",
+        hint: "This should be the Webhook's URL from the discord server you want to send chat messages to. Leave it blank to have DiscordConnect ignore regular chat messages.",
         scope: "world",
         config: true,
-        default: "http://",
+        default: "",
         type: String
     });
 	game.settings.register('DiscordConnect', 'rollWebHookURL', {
         name: "Roll Web Hook URL",
-        hint: "If you'd like to split messages between two channels, with rolls going to a separate channel, then put a second webhook URL here.",
+        hint: "This is the webhook for wherever you want rolls to appear in discord. Leave it blank to have DiscordConnect ignore rolls.",
         scope: "world",
         config: true,
-        default: "http://",
+        default: "",
         type: String
     });
 });
@@ -49,6 +49,12 @@ Hooks.on('createChatMessage', (msg, options, userId) => {
 		return;
 	}
 	if(game.userId != game.settings.get("DiscordConnect", "mainUserId") && game.settings.get("DiscordConnect", "mainUserId") != ""){
+		return;
+	}
+	if(msg.isRoll && game.settings.get("DiscordConnect", "rollWebHookURL") == ""){
+		return;
+	}
+	if(!msg.isRoll && game.settings.get("DiscordConnect", "webHookURL") == ""){
 		return;
 	}
 	var constructedMessage = '';
@@ -122,7 +128,7 @@ function sendMessage(message, msgText, hookEmbed) {
         img = message.user.avatar;
     }
 	var hook = "";
-	if(message.isRoll && game.settings.get("DiscordConnect", "rollWebHookURL") != "http://"){
+	if(message.isRoll){
 		hook = game.settings.get("DiscordConnect", "rollWebHookURL");
 	}
     else{
