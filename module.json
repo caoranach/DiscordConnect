@@ -4,7 +4,7 @@
   "description": "Send Foundry chat to Discord!",
   "author": "Caoranach",
   "version": "1.0.5",
-  "minimumCoreVersion": "0.5.0",
+  "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": "0.7.9",
   "scripts": [
 	"./scripts/chatmirror.js"
