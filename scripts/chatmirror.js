@@ -15,6 +15,14 @@ Hooks.on("init", function() {
         default: true,
         type: Boolean
     });
+	game.settings.register('DiscordConnect', 'addChatQuotes', {
+        name: "Add Quotes to Chat",
+        hint: "If this is on, then it will surround chat messages with quotes in discord.",
+        scope: "world",
+        config: true,
+        default: true,
+        type: Boolean
+    });
     game.settings.register('DiscordConnect', 'inviteURL', {
         name: "Game Invite URL",
         hint: "This should be the internet invite URL for your game session. Duh.",
@@ -75,7 +83,12 @@ Hooks.on('createChatMessage', (msg, options, userId) => {
 		hookEmbed = [{title: title, description: desc}];
 	}
 	else if(!msg.data.content.includes("</div>")){
-		constructedMessage = '\"' + msg.data.content + '\"';
+		if(game.settings.get("DiscordConnect", "addChatQuotes")){
+			constructedMessage = '\"' + msg.data.content + '\"';
+		}
+		else {
+			constructedMessage = msg.data.content;
+		}
 	}
 	else {
 		var ids = msg.data.content.search("midi-qol-target-name");
@@ -88,6 +101,7 @@ Hooks.on('createChatMessage', (msg, options, userId) => {
 			}
 			else {
 				constructedMessage = '```Big descriptions of attack/spell go here!```';
+				return;
 			}
 		}
 	}
@@ -127,6 +141,15 @@ function sendMessage(message, msgText, hookEmbed) {
     else {
         img = message.user.avatar;
     }
+	
+	var imgurl = "";
+	if(img.includes("http")){
+		imgurl = img;
+	}
+	else{
+		imgurl = game.settings.get("DiscordConnect", "inviteURL") + img;
+	}
+	
 	var hook = "";
 	if(message.isRoll){
 		hook = game.settings.get("DiscordConnect", "rollWebHookURL");
@@ -134,7 +157,7 @@ function sendMessage(message, msgText, hookEmbed) {
     else{
 		hook = game.settings.get("DiscordConnect", "webHookURL");
 	}
-	sendToWebhook(message, msgText, hookEmbed, hook, img);
+	sendToWebhook(message, msgText, hookEmbed, hook, imgurl);
 }
 
 function sendToWebhook(message, msgText, hookEmbed, hook, img){
@@ -143,7 +166,7 @@ function sendToWebhook(message, msgText, hookEmbed, hook, img){
 	request.setRequestHeader('Content-type', 'application/json');
 	var params = {
 		username: message.alias,
-		avatar_url: game.settings.get("DiscordConnect", "inviteURL") + img,
+		avatar_url: encodeURI(img),
 		content: msgText,
 		embeds: hookEmbed
 	}

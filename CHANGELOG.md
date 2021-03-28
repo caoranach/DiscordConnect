@@ -1,3 +1,8 @@
+# 1.0.5
+Fixed messages from tokens with images from an external URL not properly being sent to discord.
+Added option for whether it should put quotes around chat messages!
+Suppressed "Big Spell description goes here" messages. Nobody needs that kind of spam!
+
 # 1.0.4
 Reconfigured the splitting feature to allow users to completely ignore rolls or standard chat just by choosing which hooks to add to the config.
 
