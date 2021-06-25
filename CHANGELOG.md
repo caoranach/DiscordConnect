@@ -1,3 +1,7 @@
+# 1.0.6
+Added Instructions for setting up a working reverse SSL proxy
+Added Supporting proxy configuration code in DiscordConnect
+
 # 1.0.5
 Fixed messages from tokens with images from an external URL not properly being sent to discord.
 Added option for whether it should put quotes around chat messages!
