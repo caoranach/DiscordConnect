@@ -57,7 +57,7 @@ This is the ID needed for the Main GM ID field.
 
 -It's really bad with html content in general. Oops.
 
--With the move to discord.com, you'll likely need to use a reverse proxy server to get this working. See (CORS.md)[CORS.md] for more information.
+-With the move to discord.com, you'll likely need to use a reverse proxy server to get this working. See [CORS.md](CORS.md) for more information.
 
 # Future Plans
 
