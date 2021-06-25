@@ -47,6 +47,14 @@ Hooks.on("init", function() {
         default: "",
         type: String
     });
+	game.settings.register('DiscordConnect', 'proxyURL', {
+        name: "Proxy Web Hook URL",
+        hint: "This is the proxy to use to send the webhook to to get around CORS issues (see https://github.com/caoranach/DiscordConnect/blob/main/CORS.md). DiscordConnect will replace the leading 'https://discord.com/api/' with the proxyURL (ensure you include a trailing slash!). Leave it blank to have DiscordConnect not use a proxy.",
+        scope: "world",
+        config: true,
+        default: "",
+        type: String
+    });
 });
 
 Hooks.on("ready", function() {
@@ -110,26 +118,26 @@ Hooks.on('createChatMessage', (msg, options, userId) => {
 
 function parseHitMessage(msg){
 	var parser = new DOMParser();
-  var htmlDoc = parser.parseFromString(msg, 'text/xml');
-  
-  var search = htmlDoc.getElementsByClassName("midi-qol-nobox");
-  if(search == undefined){
+	var htmlDoc = parser.parseFromString(msg, 'text/xml');
+
+	var search = htmlDoc.getElementsByClassName("midi-qol-nobox");
+	if(search == undefined){
 	return msg + " x:1";
-  }
-  var sec = search[0].getElementsByClassName("midi-qol-flex-container");
-  if(sec == undefined){
+	}
+	var sec = search[0].getElementsByClassName("midi-qol-flex-container");
+	if(sec == undefined){
 	return msg + " x:2";
-  }
-  var hitOrMiss = sec[0].getElementsByTagName("div")[0].innerHTML;
-   if(hitOrMiss == null){
+	}
+	var hitOrMiss = sec[0].getElementsByTagName("div")[0].innerHTML;
+	if(hitOrMiss == null){
 	return msg + " x:3";
-  }
-  var name = sec[0].getElementsByTagName("div")[2].innerHTML;
-   if(name == null){
+	}
+	var name = sec[0].getElementsByTagName("div")[2].innerHTML;
+	if(name == null){
 	return msg + " x:4";
-  }
-  
-  return hitOrMiss.trim()+" "+name.trim();
+	}
+
+	return hitOrMiss.trim()+" "+name.trim();
 }
 
 function sendMessage(message, msgText, hookEmbed) {
@@ -157,12 +165,17 @@ function sendMessage(message, msgText, hookEmbed) {
     else{
 		hook = game.settings.get("DiscordConnect", "webHookURL");
 	}
-	sendToWebhook(message, msgText, hookEmbed, hook, imgurl);
+
+	var proxy = "";
+	proxy = game.settings.get("DiscordConnect", "proxyURL");
+
+	sendToWebhook(message, msgText, hookEmbed, hook, imgurl, proxy);
 }
 
-function sendToWebhook(message, msgText, hookEmbed, hook, img){
+function sendToWebhook(message, msgText, hookEmbed, hook, img, proxy){
 	var request = new XMLHttpRequest();
-    request.open("POST", hook);
+	sendURL = proxy == "" ? hook : hook.replace("https://discord.com/api/", proxy);
+    request.open("POST", sendURL);
 	request.setRequestHeader('Content-type', 'application/json');
 	var params = {
 		username: message.alias,
@@ -222,4 +235,4 @@ function  generatePortraitImageElement(actor) {
     let img = "";
     img = actor.token ? actor.token.data.img : actor.data.token.img;
     return img;
-  }
+}
